@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty Duties Display</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>All Faculty Duties</h2>
+    <div class="form-group">
+        <label for="filter_name">Faculty Name:</label>
+        <input type="text" id="filter_name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="filter_date">Date:</label>
+        <input type="date" id="filter_date" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="filter_duty">Duty:</label>
+        <select id="filter_duty" class="form-control">
+            <option value="" selected hidden>All</option>
+            <option value="Mess Duty">Mess Duty</option>
+            <option value="Floor Duty">Floor Duty</option>
+        </select>
+    </div>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Faculty Name</th>
+                <th>Designation</th>
+                <th>Duty</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="duties_table">
+            <!-- Dynamic Content Here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        function fetchDuties() {
+            $.ajax({
+                url: 'get_duties.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    let tableContent = '';
+                    data.forEach(function(duty) {
+                        tableContent += `<tr>
+                            <td>${duty.faculty_name}</td>
+                            <td>${duty.designation}</td>
+                            <td>${duty.duty}</td>
+                            <td>${duty.duty_date}</td>
+                        </tr>`;
+                    });
+                    $('#duties_table').html(tableContent);
+                }
+            });
+        }
+
+        function filterDuties() {
+            const name = $('#filter_name').val().toLowerCase();
+            const date = $('#filter_date').val();
+            const duty = $('#filter_duty').val();
+
+            $('#duties_table tr').filter(function() {
+                $(this).toggle(
+                    ($(this).find('td').eq(0).text().toLowerCase().indexOf(name) > -1 || name === '') &&
+                    ($(this).find('td').eq(3).text().indexOf(date) > -1 || date === '') &&
+                    ($(this).find('td').eq(2).text() === duty || duty === '')
+                );
+            });
+        }
+
+        $('#filter_name, #filter_date, #filter_duty').on('input change', filterDuties);
+
+        fetchDuties();
+    });
+</script>
+</body>
+</html>

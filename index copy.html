@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty Duties Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Faculty Duties Form</h2>
+    <form id="facultyForm" action="save_duties.php" method="POST">
+        <div class="form-group">
+            <label for="faculty_name">Faculty Name:</label>
+            <input type="text" id="faculty_name" name="faculty_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="designation">Designation:</label>
+            <select id="designation" name="designation" class="form-control" required>
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Assistant Professor">Assistant Professor</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="duty">Duty:</label>
+            <select id="duty" name="duty" class="form-control" required>
+                <option value="All" selected hidden>All</option>
+                <option value="Mess Duty">Mess Duty</option>
+                <option value="Floor Duty">Floor Duty</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="duty_date">Date:</label>
+            <input type="date" id="duty_date" name="duty_date" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Show alert if status is success
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            alert('Faculty duty inserted successfully');
+        }
+    });
+</script>
+</body>
+</html>
